@@ -1,0 +1,43 @@
+import org.firmata.*;
+import processing.serial.*;
+import cc.arduino.*;
+
+Arduino arduino;
+
+int potPin = 0; //analog input pin 0
+float val; //a variable for storing the value of the potentiometer
+
+
+
+void setup()
+{
+
+  size(400, 450);
+  background(126);
+  arduino = new Arduino(this, Arduino.list()[2], 57600);
+  arduino.pinMode(potPin, Arduino.INPUT);
+}
+
+int y=0;
+
+void draw()
+{
+  val = arduino.analogRead(potPin);
+  val = map(val, 0, 1023, 0, 399);
+  background(125);
+  noStroke();
+  fill (20, 156, 216);
+  ellipse(val, y, 20, 20);
+
+  if (y<630)
+  {
+    y=y+1;
+  }
+  if (y>620)
+  {
+    y=0;
+  }
+
+  println(val);
+}
+
