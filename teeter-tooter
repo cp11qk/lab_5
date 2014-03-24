@@ -1,0 +1,40 @@
+import org.firmata.*;
+import processing.serial.*;
+import cc.arduino.*;
+
+Arduino arduino;
+//----------[Variables]----------
+int servoPin = 0; //analog output to pin 0
+float servoValue;
+int servoValueInt;
+float mx = width/4;
+float my = 200;
+
+void setup() {
+  size(400, 400);
+  background(126);
+  noCursor();
+  smooth();
+  //
+  arduino = new Arduino(this, Arduino.list()[2], 57600); //println(Arduino.list());
+}// setup ends
+
+void draw() {
+  background(126);
+  //
+  fill (102);
+  rectMode(CENTER);
+  rect(200, 200, 200, 50);
+  fill (255);
+  ellipse(mx, my, 49.5, 49.5);
+  //
+  servoValue = map(servoValue, 125, 275, 0, 179); //re-maps ball positon values to 0-180 degrees
+  servoValueInt = int(servoValue);// converts float value to int
+  arduino.servoWrite(servoPin, servoValueInt); //servo positon
+} // draw ends
+
+void mouseMoved() {
+  // tracks mouse position
+  mx = constrain(mouseX, 125, 275);
+  my = constrain(mouseY, 200, 200);
+}
